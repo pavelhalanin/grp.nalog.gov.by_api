@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Документация API",
+    "description": "Документация API в виде SwaggerUI через [конфиг OpenAPI 3.0](/api/swagger/config/main.json)",
+    "contact": { "email": "pavel.innokentevich.galanin@gmail.com" },
+    "version": "2025.04.23"
+  },
+  "externalDocs": {
+    "description": "Документация API получения сведений по юридическим лицам",
+    "url": "http://grp.nalog.gov.by/grp/rest-api"
+  },
+  "tags": [
+    {
+      "name": "grp-nalog-gov-by",
+      "description": "Сведений по юридическим лицам",
+      "externalDocs": {
+        "description": "Документация API получения сведений по юридическим лицам",
+        "url": "http://grp.nalog.gov.by/grp/rest-api"
+      }
+    }
+  ],
+  "paths": {
+    "/api/v1/state-register-payers/": {
+      "get": {
+        "tags": ["grp-nalog-gov-by"],
+        "summary": "Уникальный список заказов",
+        "description": "Из списка транзакций составлен список заказов",
+        "parameters": [
+          {
+            "name": "unp",
+            "in": "query",
+            "description": "УНП",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "default": "100582333"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешно получен список заказов",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "row": {
+                      "type": "object",
+                      "properties": {
+                        "vunp": {
+                          "type": "number",
+                          "description": "УНП плательщика"
+                        },
+                        "vnaimp": {
+                          "type": "string",
+                          "description": "полное наименование плательщика"
+                        },
+                        "vnaimk": {
+                          "type": "string",
+                          "description": "краткое наименование плательщика"
+                        },
+                        "vpadres": {
+                          "type": "string",
+                          "description": "адрес плательщика"
+                        },
+                        "dreg": {
+                          "type": "string",
+                          "description": "дата постановки на учет"
+                        },
+                        "nmns": {
+                          "type": "string",
+                          "description": "код инспекции МНС"
+                        },
+                        "vmns": {
+                          "type": "string",
+                          "description": "наименование инспекции МНС"
+                        },
+                        "ckodsost": {
+                          "type": "string",
+                          "description": "код состояния плательщика (1 - Дейстующий, L - ликвидирован)"
+                        },
+                        "vkods": {
+                          "type": "string",
+                          "description": "наименование состояния плательщика (1 - Действующий, L - Ликвидирован)"
+                        },
+                        "dlikv": {
+                          "type": "string",
+                          "description": "дата изменения состояния плательщика (string|null)"
+                        },
+                        "vlikv": {
+                          "type": "string",
+                          "description": "? (string|null)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка в запросе",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Дата в формате YYYY-MM-DDThh:ii:ss.111+00:00"
+                    },
+                    "status": {
+                      "type": "number",
+                      "description": "код HTTP статуса"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Сообщение об ошибке (Нет данных по запросу|getData.unp: В качестве УНП необходимо использовать 9 цифр)"
+                    },
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    }
+  }
+}
